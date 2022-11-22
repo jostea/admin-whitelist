@@ -1,12 +1,11 @@
 package com.jostea.zomboid.whitelist.service;
 
-import com.jostea.zomboid.whitelist.repository.BannedIdRepository;
+import com.jostea.zomboid.whitelist.config.WhitelistProperties;
 import com.jostea.zomboid.whitelist.repository.PlayerAccessLevelRepository;
 import com.jostea.zomboid.whitelist.repository.WhitelistRepository;
-import com.jostea.zomboid.whitelist.repository.model.BannedId;
 import com.jostea.zomboid.whitelist.repository.model.PlayerAccessLevel;
-import com.jostea.zomboid.whitelist.repository.model.AccessLevelType;
 import com.jostea.zomboid.whitelist.repository.model.Whitelist;
+import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeRconCommand;
 import static java.util.Objects.isNull;
 
 @Slf4j
@@ -24,43 +24,18 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class AccessLevelCheckService {
 
-    private static final String BAN_REASON_MESSAGE = "Automatically banned";
+    private final WhitelistProperties properties;
 
     private final WhitelistRepository whitelistRepository;
 
     private final PlayerAccessLevelRepository playerAccessLevelRepository;
 
-    private final BannedIdRepository bannedIdRepository;
-
     @Scheduled(fixedDelayString = "${whitelist.player-access-level-check-delay}")
     public void check() {
         log.info("Access level heartbeat");
 
-        final List<String> searchedAccessLevelTypes = getSearchedAccessLevelTypes();
-
-        final List<Whitelist> whitelistUsers = whitelistRepository.findByAccesslevelIn(searchedAccessLevelTypes);
-        final Map<String, PlayerAccessLevel> playerAccessLevelMap = playerAccessLevelRepository.findAllMap();
-
-        final Set<BannedId> steamIdSet = new HashSet<>();
-
-        for (final Whitelist user : whitelistUsers) {
-            // get real admin player
-            final PlayerAccessLevel playerAccessLevel = playerAccessLevelMap.get(user.getUsername());
-
-            // map returns null when get method cannot find legal admin in database, then ban him
-            if (isNull(playerAccessLevel)) {
-                user.setBanned(1);
-                user.setAccesslevel(null);
-
-                steamIdSet.add(createBannedId(user.getSteamid()));
-
-                log.info("Banned user with {} username", user.getUsername());
-            }
-        }
-
-        // save the changes in appropriate tables(in database)
-        whitelistRepository.saveAll(whitelistUsers);
-        bannedIdRepository.saveAll(steamIdSet.stream().toList());
+        final CompositeBanSet playersToBan = prepareBannedPlayers();
+        banPlayers(playersToBan);
     }
 
     private List<String> getSearchedAccessLevelTypes() {
@@ -70,11 +45,39 @@ public class AccessLevelCheckService {
         );
     }
 
-    private BannedId createBannedId(final String steamId) {
-        final BannedId bannedId = new BannedId();
-        bannedId.setSteamid(steamId);
-        bannedId.setReason(BAN_REASON_MESSAGE);
+    private CompositeBanSet prepareBannedPlayers() {
+        final List<String> searchedAccessLevelTypes = getSearchedAccessLevelTypes();
 
-        return bannedId;
+        final List<Whitelist> whitelistUsers = whitelistRepository.findByAccesslevelIn(searchedAccessLevelTypes);
+        final Map<String, PlayerAccessLevel> playerAccessLevelMap = playerAccessLevelRepository.findAllMap();
+
+        final Set<String> steamIdSet = new HashSet<>();
+        final Set<String> nicknameSet = new HashSet<>();
+
+        for (final Whitelist user : whitelistUsers) {
+            // get real admin player
+            final PlayerAccessLevel playerAccessLevel = playerAccessLevelMap.get(user.getUsername());
+
+            // map returns null when get method cannot find legal admin in database, then ban him
+            if (isNull(playerAccessLevel)) {
+                steamIdSet.add(user.getSteamid());
+                nicknameSet.add(user.getUsername());
+
+                log.info("Banned user with {} Steam ID", user.getSteamid());
+            }
+        }
+
+        final CompositeBanSet playersToBan = new CompositeBanSet();
+        playersToBan.setSteamIdSet(steamIdSet);
+        playersToBan.setNicknameSet(nicknameSet);
+
+        return playersToBan;
+    }
+
+    private void banPlayers(final CompositeBanSet playersToBan) {
+        final WhitelistProperties.Rcon rcon = properties.getRcon();
+
+        executeRconCommand(RconCommandType.BAN_BY_STEAM_ID, playersToBan.getSteamIdSet(), rcon);
+        executeRconCommand(RconCommandType.SET_ACCESS_LEVEL, playersToBan.getNicknameSet(), rcon);
     }
 }
