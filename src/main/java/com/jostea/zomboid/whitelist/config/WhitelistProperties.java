@@ -13,8 +13,6 @@ public class WhitelistProperties {
 
     static final String PLACEHOLDER_NAME = "whitelist";
 
-    private String playerAccessLevelCheckDelay;
-
     private Rcon rcon;
 
     @Data

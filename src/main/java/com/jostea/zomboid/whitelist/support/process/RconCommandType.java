@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum RconCommandType {
 
     BAN_BY_STEAM_ID("banid %s", 1),
-    SET_ACCESS_LEVEL("setaccesslevel %s none", 1);
+    SET_ACCESS_LEVEL("setaccesslevel %s none", 1),
+    SAVE_SERVER("save", 0);
 
     private final String command;
 

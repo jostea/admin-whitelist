@@ -20,32 +20,28 @@ public final class CommandUtils {
 
     private static final String SPACE = " ";
 
-    public static InputStream executeCommand(final String appName,
-                                             final String address,
-                                             final String password,
-                                             final String command) throws IOException {
+    public static InputStream executeRconCommand(final WhitelistProperties.Rcon rcon,
+                                                 final String command) throws IOException {
 
-        final String formedAddress = String.join(SPACE, "-a", address);
-        final String formedPassword = String.join(SPACE, "-p", password);
+        final String formedAddress = String.join(SPACE, "-a", rcon.getAddress());
+        final String formedPassword = String.join(SPACE, "-p", rcon.getPassword());
 
         final String escapedCommand = String.format("\"%s\"", command);
-        final String formedCommand = String.join(SPACE, appName, formedAddress, formedPassword, escapedCommand);
+        final String formedCommand = String.join(SPACE, rcon.getAppName(), formedAddress, formedPassword, escapedCommand);
 
         return Runtime.getRuntime().exec(formedCommand).getInputStream();
     }
 
-    public static void executeRconCommand(final RconCommandType rconCommandType,
-                                          final Set<String> playersToBan,
-                                          final WhitelistProperties.Rcon rcon) {
+    public static void executeRconPlayerCommand(final RconCommandType rconCommandType,
+                                                final Set<String> playersToBan,
+                                                final WhitelistProperties.Rcon rcon) {
 
         final AtomicReference<String> command = new AtomicReference<>(NOT_DEFINED_COMMAND);
         playersToBan.forEach(player -> {
             try {
                 command.set(rconCommandType.resolveParameters(player));
 
-                final InputStream inputStream =
-                        CommandUtils.executeCommand(rcon.getAppName(), rcon.getAddress(), rcon.getPassword(), command.get());
-
+                final InputStream inputStream = CommandUtils.executeRconCommand(rcon, command.get());
                 final String output = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                 log.info("Executed command {}, with output: {}", command, output);
             } catch (IOException e) {

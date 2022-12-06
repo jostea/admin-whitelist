@@ -15,8 +15,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeRconCommand;
+import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeRconPlayerCommand;
 import static java.util.Objects.isNull;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class AccessLevelCheckService {
 
     private final PlayerAccessLevelRepository playerAccessLevelRepository;
 
-    @Scheduled(fixedDelayString = "${whitelist.player-access-level-check-delay}")
+    @Scheduled(fixedDelayString = "${whitelist.player-access-level-check-delay-seconds}", timeUnit = TimeUnit.SECONDS)
     public void check() {
         log.info("Access level heartbeat");
 
@@ -77,7 +78,7 @@ public class AccessLevelCheckService {
     private void banPlayers(final CompositeBanSet playersToBan) {
         final WhitelistProperties.Rcon rcon = properties.getRcon();
 
-        executeRconCommand(RconCommandType.BAN_BY_STEAM_ID, playersToBan.getSteamIdSet(), rcon);
-        executeRconCommand(RconCommandType.SET_ACCESS_LEVEL, playersToBan.getNicknameSet(), rcon);
+        executeRconPlayerCommand(RconCommandType.BAN_BY_STEAM_ID, playersToBan.getSteamIdSet(), rcon);
+        executeRconPlayerCommand(RconCommandType.SET_ACCESS_LEVEL, playersToBan.getNicknameSet(), rcon);
     }
 }
