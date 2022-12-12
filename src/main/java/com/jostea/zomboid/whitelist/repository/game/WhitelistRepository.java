@@ -1,6 +1,6 @@
-package com.jostea.zomboid.whitelist.repository;
+package com.jostea.zomboid.whitelist.repository.game;
 
-import com.jostea.zomboid.whitelist.repository.model.Whitelist;
+import com.jostea.zomboid.whitelist.repository.domain.model.Whitelist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

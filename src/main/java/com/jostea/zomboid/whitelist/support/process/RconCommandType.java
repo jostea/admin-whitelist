@@ -9,7 +9,9 @@ public enum RconCommandType {
 
     BAN_BY_STEAM_ID("banid %s", 1),
     SET_ACCESS_LEVEL("setaccesslevel %s none", 1),
-    SAVE_SERVER("save", 0);
+    SAVE_SERVER("save", 0),
+    GET_LIST_OF_PLAYERS("players",0),
+    KICK_PLAYER("kickuser \\\"%s\\\" -r \\\"%s\\\"",2);
 
     private final String command;
 

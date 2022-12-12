@@ -9,6 +9,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,14 +34,19 @@ public final class CommandUtils {
         return Runtime.getRuntime().exec(formedCommand).getInputStream();
     }
 
-    public static void executeRconPlayerCommand(final RconCommandType rconCommandType,
-                                                final Set<String> playersToBan,
-                                                final WhitelistProperties.Rcon rcon) {
+    public static void executeRconPlayerCommand(final WhitelistProperties.Rcon rcon,
+                                                final RconCommandType rconCommandType,
+                                                final Set<String> playerSet,
+                                                final List<String> parameters) {
 
         final AtomicReference<String> command = new AtomicReference<>(NOT_DEFINED_COMMAND);
-        playersToBan.forEach(player -> {
+        playerSet.forEach(player -> {
             try {
-                command.set(rconCommandType.resolveParameters(player));
+                if (parameters.size() > 0) {
+                    command.set(rconCommandType.resolveParameters(player, parameters));
+                } else {
+                    command.set(rconCommandType.resolveParameters(player));
+                }
 
                 final InputStream inputStream = CommandUtils.executeRconCommand(rcon, command.get());
                 final String output = IOUtils.toString(inputStream, StandardCharsets.UTF_8);

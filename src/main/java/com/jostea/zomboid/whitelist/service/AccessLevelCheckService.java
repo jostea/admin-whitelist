@@ -1,20 +1,19 @@
 package com.jostea.zomboid.whitelist.service;
 
 import com.jostea.zomboid.whitelist.config.WhitelistProperties;
-import com.jostea.zomboid.whitelist.repository.PlayerAccessLevelRepository;
-import com.jostea.zomboid.whitelist.repository.WhitelistRepository;
-import com.jostea.zomboid.whitelist.repository.model.PlayerAccessLevel;
-import com.jostea.zomboid.whitelist.repository.model.Whitelist;
+import com.jostea.zomboid.whitelist.repository.extension.PlayerAccessLevelRepository;
+import com.jostea.zomboid.whitelist.repository.game.WhitelistRepository;
+import com.jostea.zomboid.whitelist.repository.domain.model.PlayerAccessLevel;
+import com.jostea.zomboid.whitelist.repository.domain.model.Whitelist;
+import com.jostea.zomboid.whitelist.service.domain.AccessLevelType;
+import com.jostea.zomboid.whitelist.service.domain.CompositeBanSet;
 import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeRconPlayerCommand;
@@ -78,7 +77,7 @@ public class AccessLevelCheckService {
     private void banPlayers(final CompositeBanSet playersToBan) {
         final WhitelistProperties.Rcon rcon = properties.getRcon();
 
-        executeRconPlayerCommand(RconCommandType.BAN_BY_STEAM_ID, playersToBan.getSteamIdSet(), rcon);
-        executeRconPlayerCommand(RconCommandType.SET_ACCESS_LEVEL, playersToBan.getNicknameSet(), rcon);
+        executeRconPlayerCommand(rcon, RconCommandType.BAN_BY_STEAM_ID, playersToBan.getSteamIdSet(), Collections.emptyList());
+        executeRconPlayerCommand(rcon, RconCommandType.SET_ACCESS_LEVEL, playersToBan.getNicknameSet(), Collections.emptyList());
     }
 }

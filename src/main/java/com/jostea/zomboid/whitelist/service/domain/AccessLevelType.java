@@ -1,4 +1,4 @@
-package com.jostea.zomboid.whitelist.service;
+package com.jostea.zomboid.whitelist.service.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
