@@ -11,7 +11,8 @@ public enum RconCommandType {
     SET_ACCESS_LEVEL("setaccesslevel %s none", 1),
     SAVE_SERVER("save", 0),
     GET_LIST_OF_PLAYERS("players",0),
-    KICK_PLAYER("kickuser \\\"%s\\\" -r \\\"%s\\\"",2);
+    KICK_PLAYER("kickuser \\\"%s\\\" -r \\\"%s\\\"",2),
+    QUIT("quit",0);
 
     private final String command;
 

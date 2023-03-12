@@ -18,16 +18,20 @@ public class AllowedPlayerController {
 
     private final AllowedPlayerRepository allowedPlayerRepository;
 
+    @ModelAttribute
+    public AllowedPlayer allowedPlayer(){
+        return new AllowedPlayer();
+    }
+
     @GetMapping
     public String mainPage(final Model model) {
         model.addAttribute("players", allowedPlayerRepository.findAll());
-        model.addAttribute("allowedPlayer", new AllowedPlayer());
         return "index";
     }
 
     @PostMapping
     @Transactional
-    public String savePlayer(@Valid final AllowedPlayer allowedPlayer, final BindingResult result, final Model model) {
+    public String savePlayer(@Valid final AllowedPlayer allowedPlayer, final BindingResult result) {
         if (result.hasErrors()) {
             return "index";
         }

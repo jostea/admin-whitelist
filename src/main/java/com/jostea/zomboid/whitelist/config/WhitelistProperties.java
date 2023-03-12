@@ -15,6 +15,8 @@ public class WhitelistProperties {
 
     private Rcon rcon;
 
+    private String serverStartPath;
+
     @Data
     public static class Rcon {
 

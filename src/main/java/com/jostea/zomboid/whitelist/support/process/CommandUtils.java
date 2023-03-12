@@ -56,4 +56,12 @@ public final class CommandUtils {
             }
         });
     }
+
+    public static void executeCommand(final String command){
+        try {
+            Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            log.error("Cannot execute {} command: {}", command, e);
+        }
+    }
 }
