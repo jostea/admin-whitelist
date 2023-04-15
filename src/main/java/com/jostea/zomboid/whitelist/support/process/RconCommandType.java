@@ -12,7 +12,8 @@ public enum RconCommandType {
     SAVE_SERVER("save", 0),
     GET_LIST_OF_PLAYERS("players",0),
     KICK_PLAYER("kickuser \\\"%s\\\" -r \\\"%s\\\"",2),
-    QUIT("quit",0);
+    QUIT("quit",0),
+    GUNSHOT("gunshot",0);
 
     private final String command;
 

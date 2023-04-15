@@ -33,3 +33,5 @@ build/
 .vscode/
 
 securityStart.bat
+
+log.txt

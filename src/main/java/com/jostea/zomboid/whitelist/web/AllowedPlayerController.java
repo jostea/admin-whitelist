@@ -2,24 +2,32 @@ package com.jostea.zomboid.whitelist.web;
 
 import com.jostea.zomboid.whitelist.repository.extension.AllowedPlayerRepository;
 import com.jostea.zomboid.whitelist.repository.domain.model.AllowedPlayer;
+import com.jostea.zomboid.whitelist.service.PlayersWhitelistService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/allowed-player")
+@RequestMapping("/players-whitelist")
 public class AllowedPlayerController {
 
+    @Autowired
+    private HttpServletRequest request;
+
     private final AllowedPlayerRepository allowedPlayerRepository;
+    private final PlayersWhitelistService playersWhitelistService;
 
     @ModelAttribute
-    public AllowedPlayer allowedPlayer(){
+    public AllowedPlayer allowedPlayer() {
+        String ipAddress = request.getRemoteAddr();
         return new AllowedPlayer();
     }
 
@@ -36,14 +44,16 @@ public class AllowedPlayerController {
             return "index";
         }
 
-        allowedPlayerRepository.save(allowedPlayer);
-        return "redirect:/allowed-player";
+//        allowedPlayerRepository.save(allowedPlayer);
+        playersWhitelistService.savePlayer(request.getRemoteAddr(), allowedPlayer);
+        return "redirect:/players-whitelist";
     }
 
     @GetMapping("/delete/{username}")
     @Transactional
     public String deletePlayer(@PathVariable("username") final String username) {
-        allowedPlayerRepository.deleteByUsername(username);
-        return "redirect:/allowed-player";
+//        allowedPlayerRepository.deleteByUsername(username);
+        playersWhitelistService.deletePlayer(request.getRemoteAddr(), username);
+        return "redirect:/players-whitelist";
     }
 }
