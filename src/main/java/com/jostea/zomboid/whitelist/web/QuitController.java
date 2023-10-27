@@ -13,7 +13,7 @@ public class QuitController {
 
     private final QuitService quitService;
 
-    @GetMapping("/quit-server")
+    @GetMapping("/terminate-server")
     public ResponseEntity<String> quitServer() {
         quitService.stopServer();
         return ResponseEntity.ok("Server stopped");

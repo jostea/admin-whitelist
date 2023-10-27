@@ -5,35 +5,35 @@ import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
 
 import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeRconCommand;
+
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GunshotService {
+public class PlayersAmountService {
 
     private final WhitelistProperties properties;
 
-//    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
-    public void gunshot() {
+    public String getAmountOfPlayers() {
         final WhitelistProperties.Rcon rcon = properties.getRcon();
 
         try {
-            log.info("About to make gunshot on the server...");
-            final InputStream inputStream = executeRconCommand(rcon, RconCommandType.GUNSHOT.getCommand());
+            log.info("About to get amount of players on the server...");
+            final InputStream inputStream = executeRconCommand(rcon, RconCommandType.PLAYERS.getCommand());
 
             final String output = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-            log.info(output);
+            log.info(output.replace("-", "\n"));
+            return output;
         } catch (IOException e) {
-            log.error("Unable to do shot on the server: ", e);
+            log.error("Unable to get amount of players on the server: ", e);
         }
+        return "";
     }
 }

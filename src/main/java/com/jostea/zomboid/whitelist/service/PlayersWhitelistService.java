@@ -21,26 +21,30 @@ public class PlayersWhitelistService {
 
     public void savePlayer(String ip, AllowedPlayer allowedPlayer) {
 
-        for (AdminsIP adminIP : adminsIpRepository.findAll()) {
-            if (ip.equals(adminIP.getIp())) {
-                Logger.log("User with ip " + ip + " is trying to save player with username " + allowedPlayer.getUsername());
-                allowedPlayerRepository.save(allowedPlayer);
-            } else {
-                Logger.log("User with ip " + ip + " tried to save player with username " + allowedPlayer.getUsername());
-            }
+        if (adminsIpRepository.existsByIp(ip)) {
+            Logger.log("User with ip " + ip + " saved player with username " + allowedPlayer.getUsername());
+            allowedPlayerRepository.save(allowedPlayer);
+        } else {
+            Logger.log("User with ip " + ip + " tried to save player with username " + allowedPlayer.getUsername());
         }
     }
 
     public void deletePlayer(String ip, String username) {
-        for (AdminsIP adminIP : adminsIpRepository.findAll()) {
-            if (ip.equals(adminIP.getIp())) {
-                Logger.log("User with ip " + ip + " is trying to remove player with username " + username);
-                allowedPlayerRepository.deleteByUsername(username);
-            } else {
-                Logger.log("User with ip " + ip + " tried to remove player with username " + username);
-            }
-        }
 
+        if (adminsIpRepository.existsByIp(ip)) {
+            Logger.log("User with ip " + ip + " removed player with username " + username);
+            allowedPlayerRepository.deleteByUsername(username);
+        } else {
+            Logger.log("User with ip " + ip + " tried to remove player with username " + username);
+        }
     }
 
+    public void addPlayer(String player) {
+
+        AllowedPlayer allowedPlayer = new AllowedPlayer();
+        allowedPlayer.setUsername(player);
+
+        Logger.log("Discord bot saved player with username " + allowedPlayer.getUsername());
+        allowedPlayerRepository.save(allowedPlayer);
+    }
 }

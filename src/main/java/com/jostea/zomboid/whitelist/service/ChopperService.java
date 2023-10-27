@@ -18,22 +18,23 @@ import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeR
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GunshotService {
+public class ChopperService {
 
     private final WhitelistProperties properties;
 
-//    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
-    public void gunshot() {
+//    @Scheduled(fixedDelayString = "${whitelist.chopper-server}", timeUnit = TimeUnit.HOURS)
+    public void chopper(){
         final WhitelistProperties.Rcon rcon = properties.getRcon();
 
         try {
-            log.info("About to make gunshot on the server...");
-            final InputStream inputStream = executeRconCommand(rcon, RconCommandType.GUNSHOT.getCommand());
+            log.info("About to call chopper on the server...");
+            final InputStream inputStream = executeRconCommand(rcon, RconCommandType.CHOPPER.getCommand());
 
             final String output = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             log.info(output);
         } catch (IOException e) {
-            log.error("Unable to do shot on the server: ", e);
+            log.error("Unable to call chopper on the server: ", e);
         }
     }
+
 }

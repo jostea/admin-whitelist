@@ -30,7 +30,7 @@ public class CheckAllowedPlayerService {
 
     private final AllowedPlayerRepository allowedPlayerRepository;
 
-    @Scheduled(fixedDelayString = "${whitelist.player-access-to-server-delay-seconds}", timeUnit = TimeUnit.SECONDS)
+//    @Scheduled(fixedDelayString = "${whitelist.player-access-to-server-delay-seconds}", timeUnit = TimeUnit.SECONDS)
     public void check() {
         log.info("Allowed player heartbeat");
 

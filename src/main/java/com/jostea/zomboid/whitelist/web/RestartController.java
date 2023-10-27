@@ -12,7 +12,7 @@ public class RestartController {
 
     private final RestartService restartService;
 
-    @GetMapping("/restart-server")
+    @GetMapping("/restart-pz-server")
     public ResponseEntity<String> restart() {
         restartService.restartServer();
         return ResponseEntity.ok("Server restarted");

@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 import static com.jostea.zomboid.whitelist.config.WhitelistProperties.PLACEHOLDER_NAME;
 
 @Data
@@ -16,6 +18,10 @@ public class WhitelistProperties {
     private Rcon rcon;
 
     private String serverStartPath;
+
+    private List<String> superAdminIps;
+
+    private String logPath;
 
     @Data
     public static class Rcon {

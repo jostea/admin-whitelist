@@ -8,12 +8,15 @@ import lombok.RequiredArgsConstructor;
 public enum RconCommandType {
 
     BAN_BY_STEAM_ID("banid %s", 1),
-    SET_ACCESS_LEVEL("setaccesslevel %s none", 1),
+    SET_ACCESS_LEVEL("setaccesslevel \\\"%s\\\" none", 1),
     SAVE_SERVER("save", 0),
-    GET_LIST_OF_PLAYERS("players",0),
-    KICK_PLAYER("kickuser \\\"%s\\\" -r \\\"%s\\\"",2),
-    QUIT("quit",0),
-    GUNSHOT("gunshot",0);
+    GET_LIST_OF_PLAYERS("players", 0),
+    KICK_PLAYER("kickuser \\\"%s\\\" -r \\\"%s\\\"", 2),
+    QUIT("quit", 0),
+    GUNSHOT("gunshot", 0),
+    CHOPPER("chopper", 0),
+    PLAYERS("players", 0),
+    SERVERMSG("servermsg \\\"%s\\\"",1);
 
     private final String command;
 
