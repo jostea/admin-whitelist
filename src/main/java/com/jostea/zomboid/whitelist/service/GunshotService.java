@@ -22,7 +22,7 @@ public class GunshotService {
 
     private final WhitelistProperties properties;
 
-//    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
+    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
     public void gunshot() {
         final WhitelistProperties.Rcon rcon = properties.getRcon();
 

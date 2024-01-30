@@ -22,8 +22,8 @@ public class ChopperService {
 
     private final WhitelistProperties properties;
 
-//    @Scheduled(fixedDelayString = "${whitelist.chopper-server}", timeUnit = TimeUnit.HOURS)
-    public void chopper(){
+    @Scheduled(fixedDelayString = "${whitelist.chopper-server}", timeUnit = TimeUnit.HOURS)
+    public void chopper() {
         final WhitelistProperties.Rcon rcon = properties.getRcon();
 
         try {

@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.ServletOutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.regex.Matcher;
@@ -22,11 +22,9 @@ public class GetAdminLogsService {
     public String getAdminLogs() {
         String adminLogs = "";
 
-        // Замените "путь_к_каталогу" на путь к вашему каталогу
         String directoryPath = whitelistProperties.getLogPath();
         File directory = new File(directoryPath);
 
-        // Замените "ваше_регулярное_выражение" на ваше регулярное выражение
         String regex = "\\d{1,2}-\\d{1,2}-\\d{1,2}_\\d{1,2}-\\d{1,2}-\\d{1,2}_admin\\.txt";
 
         if (directory.exists() && directory.isDirectory()) {
@@ -53,4 +51,36 @@ public class GetAdminLogsService {
 
         return adminLogs.replace(".", ".\n");
     }
+
+    public InputStream getDebugLogServer() {
+
+        String directoryPath = whitelistProperties.getLogPath();
+        File directory = new File(directoryPath);
+
+        String regex = "\\d{1,2}-\\d{1,2}-\\d{1,2}_\\d{1,2}-\\d{1,2}-\\d{1,2}_DebugLog-server\\.txt";
+
+        if (directory.exists() && directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                Pattern pattern = Pattern.compile(regex);
+
+                for (File file : files) {
+                    String fileName = file.getName();
+                    Matcher matcher = pattern.matcher(fileName);
+
+                    if (matcher.matches()) {
+                        try {
+                            return new FileInputStream(file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } else {
+            log.info("Log doesn't found");
+        }
+        return new ByteArrayInputStream("Files not found".getBytes());
+    }
+
 }
