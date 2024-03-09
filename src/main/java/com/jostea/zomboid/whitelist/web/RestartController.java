@@ -14,7 +14,6 @@ public class RestartController {
 
     @GetMapping("/restart-pz-server")
     public ResponseEntity<String> restart() {
-        restartService.restartServer();
-        return ResponseEntity.ok("Server restarted");
+        return ResponseEntity.ok(restartService.restartServer());
     }
 }

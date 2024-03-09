@@ -23,6 +23,8 @@ public class WhitelistProperties {
 
     private String logPath;
 
+    private ThreadPool asyncWorker;
+
     @Data
     public static class Rcon {
 
@@ -31,5 +33,17 @@ public class WhitelistProperties {
         private String address;
 
         private String password;
+    }
+
+    @Data
+    public static class ThreadPool {
+
+        private int minPoolSize;
+
+        private int maxPoolSize;
+
+        private int queueLength;
+
+        private String threadPoolPrefixName;
     }
 }

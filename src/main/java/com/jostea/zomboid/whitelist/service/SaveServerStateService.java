@@ -1,10 +1,12 @@
 package com.jostea.zomboid.whitelist.service;
 
+import com.jostea.zomboid.whitelist.config.ScheduleConfig;
 import com.jostea.zomboid.whitelist.config.WhitelistProperties;
 import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class SaveServerStateService {
 
     private final WhitelistProperties properties;
 
+    @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
     @Scheduled(fixedDelayString = "${whitelist.save-server-delay-hours}", timeUnit = TimeUnit.HOURS)
     public void save() {
         final WhitelistProperties.Rcon rcon = properties.getRcon();

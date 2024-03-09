@@ -29,7 +29,7 @@ public class PlayersAmountService {
             final InputStream inputStream = executeRconCommand(rcon, RconCommandType.PLAYERS.getCommand());
 
             final String output = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-            log.info(output.replace("-", "\n"));
+            log.info("Output: {}", output.replace("-", "\n"));
             return output;
         } catch (IOException e) {
             log.error("Unable to get amount of players on the server: ", e);

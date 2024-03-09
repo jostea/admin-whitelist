@@ -1,11 +1,13 @@
 package com.jostea.zomboid.whitelist.service;
 
+import com.jostea.zomboid.whitelist.config.ScheduleConfig;
 import com.jostea.zomboid.whitelist.config.WhitelistProperties;
 import com.jostea.zomboid.whitelist.repository.extension.AllowedPlayerRepository;
 import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class CheckAllowedPlayerService {
 
     private final AllowedPlayerRepository allowedPlayerRepository;
 
+    @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
 //    @Scheduled(fixedDelayString = "${whitelist.player-access-to-server-delay-seconds}", timeUnit = TimeUnit.SECONDS)
     public void check() {
         log.info("Allowed player heartbeat");

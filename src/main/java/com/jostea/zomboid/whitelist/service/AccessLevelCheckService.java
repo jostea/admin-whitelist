@@ -1,5 +1,6 @@
 package com.jostea.zomboid.whitelist.service;
 
+import com.jostea.zomboid.whitelist.config.ScheduleConfig;
 import com.jostea.zomboid.whitelist.config.WhitelistProperties;
 import com.jostea.zomboid.whitelist.repository.extension.PlayerAccessLevelRepository;
 import com.jostea.zomboid.whitelist.repository.game.WhitelistRepository;
@@ -10,6 +11,7 @@ import com.jostea.zomboid.whitelist.service.domain.CompositeBanSet;
 import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class AccessLevelCheckService {
 
     private final PlayerAccessLevelRepository playerAccessLevelRepository;
 
+    @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
     @Scheduled(fixedDelayString = "${whitelist.player-access-level-check-delay-seconds}", timeUnit = TimeUnit.SECONDS)
     public void check() {
         log.info("Access level heartbeat");
