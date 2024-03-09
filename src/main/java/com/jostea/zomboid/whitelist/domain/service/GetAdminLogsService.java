@@ -1,11 +1,10 @@
-package com.jostea.zomboid.whitelist.service;
+package com.jostea.zomboid.whitelist.domain.service;
 
-import com.jostea.zomboid.whitelist.config.WhitelistProperties;
+import com.jostea.zomboid.whitelist.config.properties.WhitelistProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletOutputStream;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,19 +21,19 @@ public class GetAdminLogsService {
     public String getAdminLogs() {
         String adminLogs = "";
 
-        String directoryPath = whitelistProperties.getLogPath();
-        File directory = new File(directoryPath);
+        final String directoryPath = whitelistProperties.getLogPath();
+        final File directory = new File(directoryPath);
 
-        String regex = "\\d{1,2}-\\d{1,2}-\\d{1,2}_\\d{1,2}-\\d{1,2}-\\d{1,2}_admin\\.txt";
+        final String regex = "\\d{1,2}-\\d{1,2}-\\d{1,2}_\\d{1,2}-\\d{1,2}-\\d{1,2}_admin\\.txt";
 
         if (directory.exists() && directory.isDirectory()) {
-            File[] files = directory.listFiles();
+            final File[] files = directory.listFiles();
             if (files != null) {
-                Pattern pattern = Pattern.compile(regex);
+                final Pattern pattern = Pattern.compile(regex);
 
                 for (File file : files) {
-                    String fileName = file.getName();
-                    Matcher matcher = pattern.matcher(fileName);
+                    final String fileName = file.getName();
+                    final Matcher matcher = pattern.matcher(fileName);
 
                     if (matcher.matches()) {
                         try {
@@ -46,27 +45,26 @@ public class GetAdminLogsService {
                 }
             }
         } else {
-            log.info("Log doesn't found");
+            log.info("Log wasn't found");
         }
 
         return adminLogs.replace(".", ".\n");
     }
 
     public InputStream getDebugLogServer() {
+        final String directoryPath = whitelistProperties.getLogPath();
+        final File directory = new File(directoryPath);
 
-        String directoryPath = whitelistProperties.getLogPath();
-        File directory = new File(directoryPath);
-
-        String regex = "\\d{1,2}-\\d{1,2}-\\d{1,2}_\\d{1,2}-\\d{1,2}-\\d{1,2}_DebugLog-server\\.txt";
+        final String regex = "\\d{1,2}-\\d{1,2}-\\d{1,2}_\\d{1,2}-\\d{1,2}-\\d{1,2}_DebugLog-server\\.txt";
 
         if (directory.exists() && directory.isDirectory()) {
-            File[] files = directory.listFiles();
+            final File[] files = directory.listFiles();
             if (files != null) {
-                Pattern pattern = Pattern.compile(regex);
+                final Pattern pattern = Pattern.compile(regex);
 
                 for (File file : files) {
-                    String fileName = file.getName();
-                    Matcher matcher = pattern.matcher(fileName);
+                    final String fileName = file.getName();
+                    final Matcher matcher = pattern.matcher(fileName);
 
                     if (matcher.matches()) {
                         try {
@@ -78,9 +76,8 @@ public class GetAdminLogsService {
                 }
             }
         } else {
-            log.info("Log doesn't found");
+            log.info("Log wasn't found");
         }
         return new ByteArrayInputStream("Files not found".getBytes());
     }
-
 }

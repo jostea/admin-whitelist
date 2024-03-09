@@ -1,5 +1,6 @@
 package com.jostea.zomboid.whitelist.config;
 
+import com.jostea.zomboid.whitelist.config.properties.WhitelistProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,7 @@
-package com.jostea.zomboid.whitelist.service;
+package com.jostea.zomboid.whitelist.domain.service;
 
 import com.jostea.zomboid.whitelist.config.ScheduleConfig;
-import com.jostea.zomboid.whitelist.config.WhitelistProperties;
+import com.jostea.zomboid.whitelist.config.properties.WhitelistProperties;
 import com.jostea.zomboid.whitelist.support.process.CommandUtils;
 import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,7 @@ import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeR
 public class RestartService {
 
     private final WhitelistProperties properties;
+
     private final ServerStatusService serverStatusService;
 
     public String restartServer() {

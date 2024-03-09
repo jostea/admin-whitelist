@@ -1,6 +1,6 @@
-package com.jostea.zomboid.whitelist.service;
+package com.jostea.zomboid.whitelist.domain.service;
 
-import com.jostea.zomboid.whitelist.config.WhitelistProperties;
+import com.jostea.zomboid.whitelist.config.properties.WhitelistProperties;
 import com.jostea.zomboid.whitelist.support.process.RconCommandType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeRconCommand;
-
 
 @Slf4j
 @Service

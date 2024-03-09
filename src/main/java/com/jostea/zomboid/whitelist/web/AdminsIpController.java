@@ -1,12 +1,11 @@
 package com.jostea.zomboid.whitelist.web;
 
-import com.jostea.zomboid.whitelist.service.AdminsIpService;
+import com.jostea.zomboid.whitelist.domain.service.AdminsIpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor

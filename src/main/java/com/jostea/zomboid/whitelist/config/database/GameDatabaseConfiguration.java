@@ -1,4 +1,4 @@
-package com.jostea.zomboid.whitelist.config;
+package com.jostea.zomboid.whitelist.config.database;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -15,14 +15,13 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaRepositories(
         basePackages = GameDatabaseConfiguration.REPOSITORY_PACKAGE,
-        entityManagerFactoryRef = "gameEntityManagerFactory",
-        considerNestedRepositories = true
+        entityManagerFactoryRef = "gameEntityManagerFactory"
 )
 public class GameDatabaseConfiguration {
 
-    static final String REPOSITORY_PACKAGE = "com.jostea.zomboid.whitelist.repository.game";
+    static final String REPOSITORY_PACKAGE = "com.jostea.zomboid.whitelist.domain.repository.game";
 
-    private static final String ENTITY_PACKAGE = "com.jostea.zomboid.whitelist.repository.domain.model";
+    private static final String ENTITY_PACKAGE = "com.jostea.zomboid.whitelist.domain.model";
 
     @Bean
     @ConfigurationProperties("spring.datasource.game")

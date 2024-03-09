@@ -1,6 +1,6 @@
-package com.jostea.zomboid.whitelist.repository.extension;
+package com.jostea.zomboid.whitelist.domain.repository.extension;
 
-import com.jostea.zomboid.whitelist.repository.domain.model.AllowedPlayer;
+import com.jostea.zomboid.whitelist.domain.model.AllowedPlayer;
 import org.springframework.data.repository.RepositoryDefinition;
 
 import java.util.List;

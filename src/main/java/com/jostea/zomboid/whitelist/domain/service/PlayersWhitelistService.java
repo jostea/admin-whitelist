@@ -1,15 +1,15 @@
-package com.jostea.zomboid.whitelist.service;
+package com.jostea.zomboid.whitelist.domain.service;
 
-import com.jostea.zomboid.whitelist.repository.domain.model.AllowedPlayer;
-import com.jostea.zomboid.whitelist.repository.extension.AdminsIpRepository;
-import com.jostea.zomboid.whitelist.repository.extension.AllowedPlayerRepository;
+import com.jostea.zomboid.whitelist.domain.model.AllowedPlayer;
+import com.jostea.zomboid.whitelist.domain.repository.extension.AdminsIpRepository;
+import com.jostea.zomboid.whitelist.domain.repository.extension.AllowedPlayerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class PlayersWhitelistService {
 
     private final AllowedPlayerRepository allowedPlayerRepository;
@@ -18,27 +18,27 @@ public class PlayersWhitelistService {
 
     public void savePlayer(String ip, AllowedPlayer allowedPlayer) {
         if (adminsIpRepository.existsByIp(ip)) {
-            log.info("User with ip " + ip + " saved player with username " + allowedPlayer.getUsername());
+            log.info("User with IP: {} saved player with username: {}",  ip, allowedPlayer.getUsername());
             allowedPlayerRepository.save(allowedPlayer);
         } else {
-            log.info("User with ip " + ip + " tried to save player with username " + allowedPlayer.getUsername());
+            log.info("User with IP: {} tried to save player with username: {}", ip, allowedPlayer.getUsername());
         }
     }
 
     public void deletePlayer(String ip, String username) {
         if (adminsIpRepository.existsByIp(ip)) {
-            log.info("User with ip " + ip + " removed player with username " + username);
+            log.info("User with IP: {} removed player with username: {}", ip, username);
             allowedPlayerRepository.deleteByUsername(username);
         } else {
-            log.info("User with ip " + ip + " tried to remove player with username " + username);
+            log.info("User with IP: {} tried to remove player with username: {}", ip, username);
         }
     }
 
     public void addPlayer(String player) {
-        AllowedPlayer allowedPlayer = new AllowedPlayer();
+        final AllowedPlayer allowedPlayer = new AllowedPlayer();
         allowedPlayer.setUsername(player);
 
-        log.info("Discord bot saved player with username " + allowedPlayer.getUsername());
+        log.info("Discord bot saved player with username: {}", allowedPlayer.getUsername());
         allowedPlayerRepository.save(allowedPlayer);
     }
 }

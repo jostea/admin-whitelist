@@ -1,4 +1,4 @@
-package com.jostea.zomboid.whitelist.repository.domain.model;
+package com.jostea.zomboid.whitelist.domain.model;
 
 import lombok.Data;
 

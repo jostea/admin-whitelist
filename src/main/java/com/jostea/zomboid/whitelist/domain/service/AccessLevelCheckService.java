@@ -1,14 +1,14 @@
-package com.jostea.zomboid.whitelist.service;
+package com.jostea.zomboid.whitelist.domain.service;
 
 import com.jostea.zomboid.whitelist.config.ScheduleConfig;
-import com.jostea.zomboid.whitelist.config.WhitelistProperties;
-import com.jostea.zomboid.whitelist.repository.extension.PlayerAccessLevelRepository;
-import com.jostea.zomboid.whitelist.repository.game.WhitelistRepository;
-import com.jostea.zomboid.whitelist.repository.domain.model.PlayerAccessLevel;
-import com.jostea.zomboid.whitelist.repository.domain.model.Whitelist;
-import com.jostea.zomboid.whitelist.service.domain.AccessLevelType;
-import com.jostea.zomboid.whitelist.service.domain.CompositeBanSet;
+import com.jostea.zomboid.whitelist.config.properties.WhitelistProperties;
+import com.jostea.zomboid.whitelist.domain.repository.extension.PlayerAccessLevelRepository;
+import com.jostea.zomboid.whitelist.domain.repository.game.WhitelistRepository;
+import com.jostea.zomboid.whitelist.domain.model.PlayerAccessLevel;
+import com.jostea.zomboid.whitelist.domain.model.Whitelist;
 import com.jostea.zomboid.whitelist.support.process.RconCommandType;
+import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -51,7 +51,7 @@ public class AccessLevelCheckService {
     private CompositeBanSet prepareBannedPlayers() {
         final List<String> searchedAccessLevelTypes = getSearchedAccessLevelTypes();
 
-        final List<Whitelist> whitelistUsers = whitelistRepository.findByAccesslevelIn(searchedAccessLevelTypes);
+        final List<Whitelist> whitelistUsers = whitelistRepository.findByAccessLevelIn(searchedAccessLevelTypes);
         final Map<String, PlayerAccessLevel> playerAccessLevelMap = playerAccessLevelRepository.findAllMap();
 
         final Set<String> steamIdSet = new HashSet<>();
@@ -63,10 +63,10 @@ public class AccessLevelCheckService {
 
             // map returns null when get method cannot find legal admin in database, then ban him
             if (isNull(playerAccessLevel)) {
-                steamIdSet.add(user.getSteamid());
+                steamIdSet.add(user.getSteamId());
                 nicknameSet.add(user.getUsername());
 
-                log.info("Banned user with {} Steam ID", user.getSteamid());
+                log.info("Banned user with {} Steam ID", user.getSteamId());
             }
         }
 
@@ -82,5 +82,23 @@ public class AccessLevelCheckService {
 
         executeRconPlayerCommand(rcon, RconCommandType.BAN_BY_STEAM_ID, playersToBan.getSteamIdSet(), Collections.emptyList());
         executeRconPlayerCommand(rcon, RconCommandType.SET_ACCESS_LEVEL, playersToBan.getNicknameSet(), Collections.emptyList());
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    private enum AccessLevelType {
+
+        ADMIN("admin"),
+        MODERATOR("moderator");
+
+        private final String typeName;
+    }
+
+    @Data
+    private static class CompositeBanSet {
+
+        private Set<String> steamIdSet;
+
+        private Set<String> nicknameSet;
     }
 }

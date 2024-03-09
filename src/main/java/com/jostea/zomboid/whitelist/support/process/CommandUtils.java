@@ -1,6 +1,6 @@
 package com.jostea.zomboid.whitelist.support.process;
 
-import com.jostea.zomboid.whitelist.config.WhitelistProperties;
+import com.jostea.zomboid.whitelist.config.properties.WhitelistProperties;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 

@@ -1,7 +1,8 @@
-package com.jostea.zomboid.whitelist.repository.domain.model;
+package com.jostea.zomboid.whitelist.domain.model;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,7 +19,9 @@ public class Whitelist {
 
     private int banned;
 
-    private String steamid;
+    @Column(name = "steamid")
+    private String steamId;
 
-    private String accesslevel;
+    @Column(name = "accesslevel")
+    private String accessLevel;
 }

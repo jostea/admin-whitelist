@@ -1,7 +1,6 @@
 package com.jostea.zomboid.whitelist.web;
 
-import com.jostea.zomboid.whitelist.service.RestartService;
-import com.jostea.zomboid.whitelist.service.domain.QuitService;
+import com.jostea.zomboid.whitelist.domain.service.QuitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

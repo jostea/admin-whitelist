@@ -1,8 +1,8 @@
 package com.jostea.zomboid.whitelist.web;
 
-import com.jostea.zomboid.whitelist.repository.extension.AllowedPlayerRepository;
-import com.jostea.zomboid.whitelist.repository.domain.model.AllowedPlayer;
-import com.jostea.zomboid.whitelist.service.PlayersWhitelistService;
+import com.jostea.zomboid.whitelist.domain.repository.extension.AllowedPlayerRepository;
+import com.jostea.zomboid.whitelist.domain.model.AllowedPlayer;
+import com.jostea.zomboid.whitelist.domain.service.PlayersWhitelistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +19,7 @@ import javax.validation.Valid;
 public class AllowedPlayerController {
 
     private final AllowedPlayerRepository allowedPlayerRepository;
+
     private final PlayersWhitelistService playersWhitelistService;
 
     @ModelAttribute
@@ -39,7 +40,6 @@ public class AllowedPlayerController {
             return "index";
         }
 
-//        allowedPlayerRepository.save(allowedPlayer);
         playersWhitelistService.savePlayer(request.getRemoteAddr(), allowedPlayer);
         return "redirect:/players-whitelist";
     }
@@ -47,7 +47,6 @@ public class AllowedPlayerController {
     @GetMapping("/delete/{username}")
     @Transactional
     public String deletePlayer(HttpServletRequest request, @PathVariable("username") final String username) {
-//        allowedPlayerRepository.deleteByUsername(username);
         playersWhitelistService.deletePlayer(request.getRemoteAddr(), username);
         return "redirect:/players-whitelist";
     }

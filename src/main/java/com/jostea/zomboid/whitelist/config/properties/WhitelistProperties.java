@@ -1,4 +1,4 @@
-package com.jostea.zomboid.whitelist.config;
+package com.jostea.zomboid.whitelist.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-import static com.jostea.zomboid.whitelist.config.WhitelistProperties.PLACEHOLDER_NAME;
+import static com.jostea.zomboid.whitelist.config.properties.WhitelistProperties.PLACEHOLDER_NAME;
 
 @Data
 @Configuration

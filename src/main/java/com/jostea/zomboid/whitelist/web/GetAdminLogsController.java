@@ -1,6 +1,6 @@
 package com.jostea.zomboid.whitelist.web;
 
-import com.jostea.zomboid.whitelist.service.GetAdminLogsService;
+import com.jostea.zomboid.whitelist.domain.service.GetAdminLogsService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor

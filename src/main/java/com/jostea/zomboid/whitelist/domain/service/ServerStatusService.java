@@ -1,4 +1,4 @@
-package com.jostea.zomboid.whitelist.service;
+package com.jostea.zomboid.whitelist.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.jostea.zomboid.whitelist.config;
+package com.jostea.zomboid.whitelist.config.database;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -24,9 +24,9 @@ import java.util.Objects;
 )
 public class ExtensionDatabaseConfiguration {
 
-    static final String REPOSITORY_PACKAGE = "com.jostea.zomboid.whitelist.repository.extension";
+    static final String REPOSITORY_PACKAGE = "com.jostea.zomboid.whitelist.domain.repository.extension";
 
-    private static final String ENTITY_PACKAGE = "com.jostea.zomboid.whitelist.repository.domain.model";
+    private static final String ENTITY_PACKAGE = "com.jostea.zomboid.whitelist.domain.model";
 
     @Bean
     @ConfigurationProperties("spring.datasource.extension")
