@@ -1,7 +1,6 @@
 package com.jostea.zomboid.whitelist.domain.service;
 
 import com.jostea.zomboid.whitelist.domain.model.AllowedPlayer;
-import com.jostea.zomboid.whitelist.domain.repository.extension.AdminsIpRepository;
 import com.jostea.zomboid.whitelist.domain.repository.extension.AllowedPlayerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,24 +13,15 @@ public class PlayersWhitelistService {
 
     private final AllowedPlayerRepository allowedPlayerRepository;
 
-    private final AdminsIpRepository adminsIpRepository;
 
     public void savePlayer(String ip, AllowedPlayer allowedPlayer) {
-        if (adminsIpRepository.existsByIp(ip)) {
-            log.info("User with IP: {} saved player with username: {}",  ip, allowedPlayer.getUsername());
-            allowedPlayerRepository.save(allowedPlayer);
-        } else {
-            log.info("User with IP: {} tried to save player with username: {}", ip, allowedPlayer.getUsername());
-        }
+        log.info("User with IP: {} saved player with username: {}", ip, allowedPlayer.getUsername());
+        allowedPlayerRepository.save(allowedPlayer);
     }
 
     public void deletePlayer(String ip, String username) {
-        if (adminsIpRepository.existsByIp(ip)) {
-            log.info("User with IP: {} removed player with username: {}", ip, username);
-            allowedPlayerRepository.deleteByUsername(username);
-        } else {
-            log.info("User with IP: {} tried to remove player with username: {}", ip, username);
-        }
+        log.info("User with IP: {} removed player with username: {}", ip, username);
+        allowedPlayerRepository.deleteByUsername(username);
     }
 
     public void addPlayer(String player) {
