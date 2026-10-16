@@ -17,11 +17,9 @@ public class Whitelist {
 
     private String username;
 
-    private int banned;
-
     @Column(name = "steamid")
     private String steamId;
 
-    @Column(name = "accesslevel")
-    private String accessLevel;
+    @Column(name = "role")
+    private Integer role;
 }

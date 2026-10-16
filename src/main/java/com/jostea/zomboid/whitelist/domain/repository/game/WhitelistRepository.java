@@ -8,5 +8,5 @@ import java.util.List;
 @RepositoryDefinition(domainClass = Whitelist.class, idClass = Integer.class)
 public interface WhitelistRepository {
 
-    List<Whitelist> findByAccessLevelIn(List<String> accessLevel);
+    List<Whitelist> findByRoleIn(List<Integer> role);
 }

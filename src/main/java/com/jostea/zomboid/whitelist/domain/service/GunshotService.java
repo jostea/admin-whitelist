@@ -25,7 +25,7 @@ public class GunshotService {
     private final WhitelistProperties properties;
 
     @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
-    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
+//    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
     public void gunshot() {
         final WhitelistProperties.Rcon rcon = properties.getRcon();
 

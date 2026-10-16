@@ -33,7 +33,7 @@ public class AccessLevelCheckService {
     private final PlayerAccessLevelRepository playerAccessLevelRepository;
 
     @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
-    @Scheduled(fixedDelayString = "${whitelist.player-access-level-check-delay-seconds}", timeUnit = TimeUnit.SECONDS)
+//    @Scheduled(fixedDelayString = "${whitelist.player-access-level-check-delay-seconds}", timeUnit = TimeUnit.SECONDS)
     public void check() {
         log.info("Access level heartbeat");
 
@@ -41,7 +41,7 @@ public class AccessLevelCheckService {
         banPlayers(playersToBan);
     }
 
-    private List<String> getSearchedAccessLevelTypes() {
+    private List<Integer> getSearchedRoles() {
         return List.of(
                 AccessLevelType.ADMIN.getTypeName(),
                 AccessLevelType.MODERATOR.getTypeName()
@@ -49,9 +49,9 @@ public class AccessLevelCheckService {
     }
 
     private CompositeBanSet prepareBannedPlayers() {
-        final List<String> searchedAccessLevelTypes = getSearchedAccessLevelTypes();
+        final List<Integer> searchedRoles = getSearchedRoles();
 
-        final List<Whitelist> whitelistUsers = whitelistRepository.findByAccessLevelIn(searchedAccessLevelTypes);
+        final List<Whitelist> whitelistUsers = whitelistRepository.findByRoleIn(searchedRoles);
         final Map<String, PlayerAccessLevel> playerAccessLevelMap = playerAccessLevelRepository.findAllMap();
 
         final Set<String> steamIdSet = new HashSet<>();
@@ -88,10 +88,10 @@ public class AccessLevelCheckService {
     @RequiredArgsConstructor
     private enum AccessLevelType {
 
-        ADMIN("admin"),
-        MODERATOR("moderator");
+        ADMIN(7),
+        MODERATOR(6);
 
-        private final String typeName;
+        private final Integer typeName;
     }
 
     @Data

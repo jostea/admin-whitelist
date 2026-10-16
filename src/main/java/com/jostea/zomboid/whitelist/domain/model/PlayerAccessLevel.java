@@ -15,11 +15,12 @@ public class PlayerAccessLevel {
     @Id
     private int id;
 
+    @Column(name = "username")
     private String username;
 
     @Column(name = "steamid")
     private String steamId;
 
     @Column(name = "accesslevel")
-    private String accessLevel;
+    private Integer accessLevel;
 }
