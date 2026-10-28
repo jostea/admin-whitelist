@@ -30,14 +30,15 @@ public class AllowedPlayerController {
     @GetMapping
     public String mainPage(final Model model) {
         model.addAttribute("players", allowedPlayerRepository.findAll());
-        return "index";
+        return "players-whitelist";
     }
 
     @PostMapping
     @Transactional
-    public String savePlayer(HttpServletRequest request, @Valid final AllowedPlayer allowedPlayer, final BindingResult result) {
+    public String savePlayer(HttpServletRequest request, @Valid final AllowedPlayer allowedPlayer, final BindingResult result,
+                             final Model model) {
         if (result.hasErrors()) {
-            return "index";
+            return mainPage(model);
         }
 
         playersWhitelistService.savePlayer(request.getRemoteAddr(), allowedPlayer);

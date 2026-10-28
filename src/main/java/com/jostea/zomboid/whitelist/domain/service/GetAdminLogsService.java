@@ -55,7 +55,7 @@ public class GetAdminLogsService {
         final String directoryPath = whitelistProperties.getLogPath();
         final File directory = new File(directoryPath);
 
-        final String regex = "\\d{1,2}-\\d{1,2}-\\d{1,2}_\\d{1,2}-\\d{1,2}-\\d{1,2}_DebugLog-server\\.txt";
+        final String regex = "^\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}_DebugLog-server\\.txt$";
 
         if (directory.exists() && directory.isDirectory()) {
             final File[] files = directory.listFiles();

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Whitelist - Zomboid Admin Panel</title>
+  <style>
+    html { background: url('/images/background.png') center / cover no-repeat fixed; min-height: 100%; }
+    body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 1rem 1.5rem;
+           background: rgba(255, 255, 255, .88); border-radius: 8px; box-shadow: 0 4px 20px rgba(0, 0, 0, .3); }
+    section { border: 1px solid #ccc; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+    h2 { margin-top: 0; font-size: 1.1rem; }
+    button, .button { padding: .5rem 1rem; margin: .25rem .25rem .25rem 0; cursor: pointer;
+                      border: 1px solid #888; border-radius: 4px; background: #f4f4f4;
+                      color: inherit; text-decoration: none; font-size: .9rem; display: inline-block; }
+    .button.danger { background: #fbe3e3; border-color: #c33; padding: .3rem .8rem; }
+    input { padding: .45rem; }
+    .error { color: #c33; margin-top: .5rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: .5rem; border-bottom: 1px solid #ddd; }
+    th { background: #f4f4f4; }
+    .muted { color: #777; }
+  </style>
+</head>
+<body>
+<a class="button" href="/">&larr; Back to dashboard</a>
+<h1>Whitelist</h1>
+
+<section>
+  <h2>Add player</h2>
+  <form th:action="@{/players-whitelist}" th:object="${allowedPlayer}" method="post">
+    <input type="text" th:field="*{username}" id="username" placeholder="Username" required>
+    <button type="submit">Add</button>
+    <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+  </form>
+</section>
+
+<section>
+  <h2>Players (<span th:text="${#lists.size(players)}">0</span>)</h2>
+  <input type="text" id="search" placeholder="Filter by username" oninput="filterPlayers(this.value)">
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="players">
+    <tr th:each="player : ${players}">
+      <td th:text="${player.id}"></td>
+      <td class="username" th:text="${player.username}"></td>
+      <td>
+        <a class="button danger"
+           th:href="@{/players-whitelist/delete/{username}(username=${player.username})}"
+           th:data-username="${player.username}"
+           onclick="return confirm('Remove ' + this.dataset.username + ' from whitelist?')">Delete</a>
+      </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(players)}">
+      <td colspan="3" class="muted">Whitelist is empty.</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+  function filterPlayers(query) {
+    const value = query.trim().toLowerCase();
+    document.querySelectorAll('#players tr').forEach(row => {
+      const cell = row.querySelector('.username');
+      if (cell) {
+        row.style.display = cell.textContent.toLowerCase().includes(value) ? '' : 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
