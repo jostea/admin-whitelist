@@ -16,8 +16,7 @@ public class PlayersNumberRestController {
     private final PlayersAmountService playersAmountService;
 
     @GetMapping
-    @Transactional
-    private String getAmountOfPlayers() {
+    public String getAmountOfPlayers() {
         return playersAmountService.getAmountOfPlayers();
     }
 }

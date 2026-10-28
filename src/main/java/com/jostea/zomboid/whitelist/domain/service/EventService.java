@@ -20,23 +20,37 @@ import static com.jostea.zomboid.whitelist.support.process.CommandUtils.executeR
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GunshotService {
+public class EventService {
 
     private final WhitelistProperties properties;
 
-    @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
-//    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
-    public void gunshot() {
-        final WhitelistProperties.Rcon rcon = properties.getRcon();
+    public String createEvent(String event) {
+        return callEvent(event, properties.getRcon());
+    }
 
+    @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
+    @Scheduled(fixedDelayString = "${whitelist.chopper-server}", timeUnit = TimeUnit.HOURS)
+    public void callChopper() {
+        callEvent("CHOPPER", properties.getRcon());
+    }
+
+    @Async(ScheduleConfig.ASYNC_TASK_EXECUTOR)
+    @Scheduled(fixedDelayString = "${whitelist.gunshot-server}", timeUnit = TimeUnit.HOURS)
+    public void makeGunshotNoice() {
+        callEvent("GUNSHOT", properties.getRcon());
+    }
+
+    public static String callEvent(String event, WhitelistProperties.Rcon rcon) {
         try {
-            log.info("About to make gunshot on the server...");
-            final InputStream inputStream = executeRconCommand(rcon, RconCommandType.GUNSHOT.getCommand());
+            log.info("About to make {} on the server...", event);
+            final InputStream inputStream = executeRconCommand(rcon, RconCommandType.valueOf(event.toUpperCase()).getCommand());
 
             final String output = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             log.info("Output: {}", output);
+            return output;
         } catch (IOException e) {
-            log.error("Unable to do gunshot on the server: ", e);
+            log.error("Unable to do {} on the server: ", event, e);
         }
+        return null;
     }
 }

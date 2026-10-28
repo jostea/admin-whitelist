@@ -16,7 +16,8 @@ public enum RconCommandType {
     GUNSHOT("gunshot", 0),
     CHOPPER("chopper", 0),
     PLAYERS("players", 0),
-    SERVERMSG("servermsg \\\"%s\\\"",1);
+    SERVERMSG("servermsg \\\"%s\\\"",1),
+    ADD_ITEM("additem \\\"%s\\\" \\\"%s\\\" %s", 3);
 
     private final String command;
 
